@@ -4,16 +4,15 @@ import Model.Customer;
 import Model.Province;
 import Service.CustomerService;
 import Service.ProvinceService;
+import exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
+@RequestMapping("/customer")
 public class CustomerController {
 
     @Autowired
@@ -27,23 +26,23 @@ public class CustomerController {
         return provinceService.findAll();
     }
 
-    @GetMapping("/create-customer")
+    @GetMapping("/create")
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("create");
         modelAndView.addObject("customer", new Customer());
         return modelAndView;
     }
 
-    @PostMapping("/create-customer")
+    @PostMapping("/create")
     public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer){
         customerService.save(customer);
         ModelAndView modelAndView = new ModelAndView("create");
         modelAndView.addObject("customer", new Customer());
-        modelAndView.addObject("message", "New customer created successfully");
+        modelAndView.addObject("message", "New customer created hjhj");
         return modelAndView;
     }
 
-    @GetMapping("/customers")
+    @GetMapping("/")
     public ModelAndView listCustomers(){
         Iterable<Customer> customers = customerService.findAll();
         ModelAndView modelAndView = new ModelAndView("list");
@@ -51,8 +50,8 @@ public class CustomerController {
         return modelAndView;
     }
 
-    @GetMapping("/edit-customer/{id}")
-    public ModelAndView showEditForm(@PathVariable Long id){
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id) throws NotFoundException {
         Customer customer = customerService.findById(id);
         if(customer != null) {
             ModelAndView modelAndView = new ModelAndView("edit");
@@ -65,17 +64,17 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/edit-customer")
+    @PostMapping("/edit")
     public ModelAndView updateCustomer(@ModelAttribute("customer") Customer customer){
         customerService.save(customer);
         ModelAndView modelAndView = new ModelAndView("edit");
         modelAndView.addObject("customer", customer);
-        modelAndView.addObject("message", "Customer updated successfully");
+        modelAndView.addObject("message", "Customer updated hjhj");
         return modelAndView;
     }
 
-    @GetMapping("/delete-customer/{id}")
-    public ModelAndView showDeleteForm(@PathVariable Long id){
+    @GetMapping("/delete/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id) throws NotFoundException{
         Customer customer = customerService.findById(id);
         if(customer != null) {
             ModelAndView modelAndView = new ModelAndView("delete");
@@ -83,14 +82,14 @@ public class CustomerController {
             return modelAndView;
 
         }else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
+            ModelAndView modelAndView = new ModelAndView("error.404");
             return modelAndView;
         }
     }
 
-    @PostMapping("/delete-customer")
+    @PostMapping("/delete")
     public String deleteCustomer(@ModelAttribute("customer") Customer customer){
         customerService.remove(customer.getId());
-        return "redirect:customers";
+        return "redirect:customer/";
     }
 }

@@ -8,9 +8,9 @@
 <h1>Delete customer</h1>
 <h2>Are you sure?</h2>
 <p>
-    <a href="/customers">Customer list</a>
+    <a href="/customer">Customer list</a>
 </p>
-<form th:action="@{/delete-customer}" th:object="${customer}" method="post">
+<form th:action="@{/customer/delete}" th:object="${customer}" method="post">
     <input th:type="hidden" name="id" th:field="*{id}">
     <table>
         <tr>

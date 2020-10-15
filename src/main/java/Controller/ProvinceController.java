@@ -4,19 +4,17 @@ import Model.Province;
 import Service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("provinces")
 public class ProvinceController {
 
     @Autowired
     private ProvinceService provinceService;
 
-    @GetMapping("/provinces")
+    @GetMapping("/")
     public ModelAndView listProvinces(){
         Iterable<Province> provinces = provinceService.findAll();
         ModelAndView modelAndView = new ModelAndView("province/list");
@@ -24,14 +22,14 @@ public class ProvinceController {
         return modelAndView;
     }
 
-    @GetMapping("/create-province")
+    @GetMapping("create")
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("province/create");
         modelAndView.addObject("province", new Province());
         return modelAndView;
     }
 
-    @PostMapping("/create-province")
+    @PostMapping("create")
     public ModelAndView saveProvince(@ModelAttribute("province") Province province){
         provinceService.save(province);
 
@@ -41,7 +39,7 @@ public class ProvinceController {
         return modelAndView;
     }
 
-    @GetMapping("/edit-province/{id}")
+    @GetMapping("edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id){
         Province province = provinceService.findById(id);
         if(province != null) {
@@ -55,7 +53,7 @@ public class ProvinceController {
         }
     }
 
-    @PostMapping("/edit-province")
+    @PostMapping("edit")
     public ModelAndView updateProvince(@ModelAttribute("province") Province province){
         provinceService.save(province);
         ModelAndView modelAndView = new ModelAndView("province/edit");
@@ -64,7 +62,7 @@ public class ProvinceController {
         return modelAndView;
     }
 
-    @GetMapping("/delete-province/{id}")
+    @GetMapping("delete/{id}")
     public ModelAndView showDeleteForm(@PathVariable Long id){
         Province province = provinceService.findById(id);
         if(province != null) {
@@ -78,7 +76,7 @@ public class ProvinceController {
         }
     }
 
-    @PostMapping("/delete-province")
+    @PostMapping("/delete")
     public String deleteProvince(@ModelAttribute("province") Province province){
         provinceService.remove(province.getId());
         return "redirect:provinces";

@@ -7,12 +7,12 @@
 <body>
 <h1>Edit customer</h1>
 <p>
-    <a href="/customers">Customer list</a>
+    <a href="/customer">Customer list</a>
 </p>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/edit-customer}" th:object="${customer}" method="post">
+<form th:action="@{/customer/edit}" th:object="${customer}" method="post">
     <input th:type="hidden" name="id" th:field="*{id}">
     <table>
         <tr>

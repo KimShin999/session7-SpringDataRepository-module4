@@ -1,10 +1,9 @@
 package Config;
-
-import Repository.CustomerRepository;
 import Service.CustomerService;
 import Service.ProvinceService;
 import Service.impl.CustomerServiceImpl;
 import Service.impl.ProvinceServiceImpl;
+import aspect.Mylogger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +11,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -40,6 +40,7 @@ import java.util.Properties;
 @ComponentScan("Controller")
 @EnableJpaRepositories("Repository")
 @EnableSpringDataWebSupport
+@EnableAspectJAutoProxy
 public class ApplicationConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -49,7 +50,10 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         this.applicationContext = applicationContext;
     }
 
-
+    @Bean
+    public Mylogger myLogger(){
+        return new Mylogger();
+    }
     @Bean
     public CustomerService customerService(){
         return new CustomerServiceImpl();
