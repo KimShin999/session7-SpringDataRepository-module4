@@ -26,6 +26,11 @@ public class CustomerController {
         return provinceService.findAll();
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView showInputNotAcceptable() {
+        return new ModelAndView("exception");
+    }
+
     @GetMapping("/create")
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("create");
